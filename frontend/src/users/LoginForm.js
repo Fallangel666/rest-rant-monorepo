@@ -6,6 +6,8 @@ function LoginForm() {
 
     const history = useHistory()
 
+
+
     const { setCurrentUser } = useContext(CurrentUser)
 
     const [credentials, setCredentials] = useState({
@@ -20,6 +22,7 @@ function LoginForm() {
     async function handleSubmit(e) {
         const response = await fetch(`http://localhost:5000/authentication/`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -30,6 +33,7 @@ function LoginForm() {
 
         if (response.status === 200) {
             setCurrentUser(data.user)
+            localStorage.setItem('token', data.token)
             history.push(`/`)
         } else {
             setErrorMessage(data.message)
